@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Smart Lock Control</h2>
+
+<button onclick="updateState('locked')">🔒 Lock</button>
+<button onclick="updateState('unlocked')">🔓 Unlock</button>
+
+<script>
+async function updateState(state) {
+    const url = "https://wsihshdjwsukyevqotpd.supabase.co/rest/v1/lock_state?id=eq.1";
+    const apikey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzaWhzaGRqd3N1a3lldnFvdHBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2NTg0NjYsImV4cCI6MjA4NTIzNDQ2Nn0.osEUkiebySs0MXi2lYYF8gSnZpjpWTFMfMawKq6o62U";
+
+    await fetch(url, {
+        method: "PATCH",
+        headers: {
+            "apikey": apikey,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ state: state })
+    });
+
+    alert("State updated: " + state);
+}
+</script>
+</body>
+</html>
