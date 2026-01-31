@@ -1,14 +1,159 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Lock Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .status-section {
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .status-section p {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        #currentState {
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #2a2a2a;
+            padding: 8px 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+            border: 1px solid #3a3a3a;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button[onclick="fetchState()"] {
+            background: #2a2a2a;
+            color: #ffffff;
+            margin-bottom: 25px;
+            border: 1px solid #3a3a3a;
+        }
+
+        button[onclick="fetchState()"]:hover {
+            background: #333333;
+            border-color: #4a4a4a;
+        }
+
+        button[onclick="updateState('locked')"] {
+            background: #1a1a1a;
+            color: #ff4444;
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.15);
+        }
+
+        button[onclick="updateState('locked')"]:hover {
+            background: #ff4444;
+            color: #ffffff;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
+        }
+
+        button[onclick="updateState('unlocked')"] {
+            background: #1a1a1a;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.15);
+        }
+
+        button[onclick="updateState('unlocked')"]:hover {
+            background: #00ff88;
+            color: #0a0a0a;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
 <body>
+<div class="container">
 <h2>Smart Lock Control</h2>
 
+<div class="status-section">
 <p>現在の状態: <span id="currentState">読み込み中...</span></p>
 <button onclick="fetchState()">🔄 状態を更新</button>
-<br><br>
+</div>
 
 <button onclick="updateState('locked')">🔒 Lock</button>
 <button onclick="updateState('unlocked')">🔓 Unlock</button>
+</div>
 
 <script>
 const url = "https://wsihshdjwsukyevqotpd.supabase.co/rest/v1/lock_state?id=eq.1&select=state";
