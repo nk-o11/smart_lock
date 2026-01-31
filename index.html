@@ -3,15 +3,31 @@
 <body>
 <h2>Smart Lock Control</h2>
 
+<p>現在の状態: <span id="currentState">読み込み中...</span></p>
+<button onclick="fetchState()">🔄 状態を更新</button>
+<br><br>
+
 <button onclick="updateState('locked')">🔒 Lock</button>
 <button onclick="updateState('unlocked')">🔓 Unlock</button>
 
 <script>
-async function updateState(state) {
-    const url = "https://wsihshdjwsukyevqotpd.supabase.co/rest/v1/lock_state?id=eq.1";
-    const apikey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzaWhzaGRqd3N1a3lldnFvdHBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2NTg0NjYsImV4cCI6MjA4NTIzNDQ2Nn0.osEUkiebySs0MXi2lYYF8gSnZpjpWTFMfMawKq6o62U";
+const url = "https://wsihshdjwsukyevqotpd.supabase.co/rest/v1/lock_state?id=eq.1&select=state";
+const apikey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndzaWhzaGRqd3N1a3lldnFvdHBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2NTg0NjYsImV4cCI6MjA4NTIzNDQ2Nn0.osEUkiebySs0MXi2lYYF8gSnZpjpWTFMfMawKq6o62U";
 
-    await fetch(url, {
+// 現在の状態を取得して表示
+async function fetchState() {
+    const res = await fetch(url, {
+        headers: { "apikey": apikey }
+    });
+    const data = await res.json();
+    document.getElementById("currentState").textContent = data[0].state;
+}
+
+// 状態を変更
+async function updateState(state) {
+    const updateUrl = "https://wsihshdjwsukyevqotpd.supabase.co/rest/v1/lock_state?id=eq.1";
+
+    await fetch(updateUrl, {
         method: "PATCH",
         headers: {
             "apikey": apikey,
@@ -21,7 +37,11 @@ async function updateState(state) {
     });
 
     alert("State updated: " + state);
+    fetchState(); // 更新後に最新状態を表示
 }
+
+// ページ読み込み時に状態を取得
+fetchState();
 </script>
 </body>
 </html>
